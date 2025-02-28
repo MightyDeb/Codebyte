@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs"
 
 const userSchema = new mongoose.Schema(
   {
@@ -8,15 +8,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    codebyteUsername: {
+    email: {
       type: String,
-      required: true,
       unique: true,
+      required: true,
       trim: true,
-      minlength: 3,
-      maxlength: 15,
+      lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please fill a valid email address']
     },
-    codeforcesUsername: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -30,16 +30,15 @@ const userSchema = new mongoose.Schema(
     profileAvatar: {
       type: String 
     },
-    lastActive: {
-      type: Date,
-      default: Date.now,
-    },
     friends:[
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User", 
       },
-    ]
+    ],
+    contestNumber:{
+      type: Number
+    }
   },
   {
     timestamps: true, // Automatically adds `createdAt` and `updatedAt` fields
@@ -66,4 +65,4 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User

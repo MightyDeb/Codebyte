@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function App() {
+  const user= localStorage.getItem("user")
   const [leaderboard, setLeaderboard] = useState([]);
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
   const [loadingUser, setLoadingUser] = useState(false);
@@ -43,7 +44,7 @@ function App() {
     try {
       const response = await axios.get("http://localhost:5000/api/leaderboard")
       .catch(e=> setError(e))
-      const sortedUsers = response?.data.sort((a, b) => b.rating - a.rating).slice(0,1000);
+      const sortedUsers = response.data.result.sort((a, b) => b.rating - a.rating).slice(0,1000);
       setLeaderboard(sortedUsers);
     } catch (err) {
       setError("An error occurred while fetching the leaderboard.");
@@ -56,6 +57,10 @@ function App() {
   useEffect(() => {
     fetchLeaderboard();
   }, []);
+
+  const addFriend= ()=>{
+
+  }
 
   return (
     <div className="App" style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
@@ -108,6 +113,7 @@ function App() {
             <strong>Registered:</strong>{" "}
             {new Date(userDetails.registrationTimeSeconds * 1000).toLocaleString()}
           </p>
+          <button type="submit" onClick={addFriend}>Add to friend</button>
         </div>
       )}
       <br/>

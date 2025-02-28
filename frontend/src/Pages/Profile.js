@@ -7,40 +7,54 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "r
 
 
 const Profile = () => {
-  const username="Mighty_Deb"
-  //other details from local database
-  const [userInfo, setUserInfo] = useState();
+  const username= localStorage.getItem("user")
+  const [localInfo,setLocalInfo]= useState(null)
+  const [userInfo, setUserInfo] = useState(null);
   const [historyInfo, setHistoryInfo]= useState([])
 
-  useEffect(()=>{
-    axios.get(`https://codeforces.com/api/user.info?handles=${username}`)
-    .then(response=> {
-      setUserInfo( response.data.result[0])   
-    })
-    .catch((error) => {
-      console.error(error); })
-    axios.get(`https://codeforces.com/api/user.rating?handle=${username}`)
-    .then(response => {
-      setHistoryInfo( response.data.result)
-    })
-    .catch((error) => {
-      console.error(error); })
-  },[])
+  
 
-  if (!userInfo) return <div><h1>Loading...</h1></div>;
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchData() {
+      try {
+        const userInfoResponse = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
+        const historyInfoResponse = await axios.get(`https://codeforces.com/api/user.rating?handle=${username}`);
+        const localInfoResponse = await axios.get('http://localhost:5000/api/user/me', { withCredentials: true });
+
+        if (isMounted) {
+          setUserInfo(userInfoResponse.data.result[0]);
+          setHistoryInfo(historyInfoResponse.data.result);
+          setLocalInfo(localInfoResponse.data.user);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!userInfo || !localInfo) return <div><h1>Loading...</h1></div>;
 
   return (
     <div>
       <h2>User Analytics: {username}</h2>
 
       <h3>User Info</h3>
-      <p>Registered Name:</p>
+      <p>Registered Name: {localInfo.name}</p>
       <p>Name: {userInfo.handle}</p>
       <p>Rating: {userInfo.rating}</p>
       <p>Max Rating: {userInfo.maxRating}</p>
       <p>Rank: {userInfo.rank}</p>
-      <p>Number of contests created on Codebyte:</p>
-      <img src={userInfo.avatar} alt="User Avatar"/>
+      <p>Date of registration: {localInfo.createdAt}</p>
+      <img src={localInfo.profileAvatar} alt="User Avatar"/>
+      
 
       <h3>CODEFORCES Rating History</h3>
       <h2>Last 5 contests</h2>

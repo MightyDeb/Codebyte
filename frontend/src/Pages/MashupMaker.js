@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const MashupMaker = () => {
+  const username= localStorage.getItem("user")
   const [allProblems, setAllProblems] = useState([]);
   const [selectedProblems, setSelectedProblems] = useState([]);
   const [problemTag, setProblemTag] = useState("");
@@ -9,12 +11,30 @@ const MashupMaker = () => {
   const [problems,setProblems]= useState([])
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [show,setShow]= useState(false)
+  const [duration,setDuration]= useState(0)
+  const [previousContest, setPreviousContests]= useState([])
   useEffect(() => {
-    // Fetch problems from the backend
-    axios.get("https://codeforces.com/api/problemset.problems")
-    .then(response=> setAllProblems( response.data.result.problems))
-    .catch((error) => {
-      console.error(error); })
+    let isMounted= true;
+    async function fetchData(){
+      try {
+        const problemsList= await axios.get(`https://codeforces.com/api/problemset.problems`)
+        const contestsList= await axios.get('http://localhost:5000/api/contest/pastContests',{
+          withCredentials: true,
+        })
+        if(isMounted){
+          setAllProblems(problemsList.data.result.problems)
+          setPreviousContests(contestsList.data.contestList)
+          console.log(contestsList)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchData();
+    return () => {
+      isMounted=false
+    }
   }, []);
 
   const handleProblemSelect = (problem) => {
@@ -41,14 +61,12 @@ const MashupMaker = () => {
         let filteredProblems= []
         if(problemTag){
           filteredProblems = filteredProblems.length>0 ? filteredProblems.filter((problem) =>
-            problem.tags.includes(problemTag.toLowerCase())
-          ) : allProblems.filter((problem) =>
+            problem.tags.includes(problemTag.toLowerCase())) : allProblems.filter((problem) =>
             problem.tags.includes(problemTag.toLowerCase()));
         }
         if(problemRating){
           filteredProblems = filteredProblems.length>0 ? filteredProblems.filter((problem) =>
-            problem.rating===parseInt(problemRating, 10)
-          ) : allProblems.filter((problem) =>
+            problem.rating===parseInt(problemRating, 10)) : allProblems.filter((problem) =>
             problem.rating===parseInt(problemRating, 10));         
         }
         if (filteredProblems.length === 0) {
@@ -69,6 +87,27 @@ const MashupMaker = () => {
     }
   };
 
+  const createContest= async(e)=>{
+    e.preventDefault();
+    const problems= selectedProblems.map((problem)=>(
+      {
+        contestId: problem.contestId, index: problem.index
+      }
+    ))
+    const formData={
+      problems,
+      duration
+    }
+    try {
+      const {data} = await axios.post('http://localhost:5000/api/contest/createContest', formData, {
+        withCredentials: true,
+      });
+      toast.success(data.message)
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong')
+    }
+  }
+
   return (
     <div>
       <h2>Selected Problems</h2>
@@ -79,6 +118,31 @@ const MashupMaker = () => {
           </li>
         ))}
       </ul>
+      <button onClick={()=>{
+          setShow(true)
+         console.log(selectedProblems)}}>CREATE CONTEST</button>
+      {show &&
+        <form>
+          <input type="number" placeholder="Set duration in minutes"  value={duration} onChange={(e) => setDuration(e.target.value)}/>
+          <button type="submit" onClick={createContest}>FINALISE</button>
+        </form>
+      }
+      <br/>
+      <h1>Show previous contest</h1>
+      {previousContest && previousContest.length>0 && previousContest.map((contest,index)=>{
+        return(
+          <div>
+            <p>ContestNo: {index+1}</p>
+            <p>Problem List</p>
+            {contest.problems?.map((i)=>(
+              <p>
+                {i.contestId}-{i.index}
+              </p>
+            ))}
+            <p>No. of registrations: {contest.registrations.length}</p>
+          </div>
+        )
+      })}
       <h1>Find a problem</h1>
       <div>
         <input
@@ -118,6 +182,7 @@ const MashupMaker = () => {
             </div>
           ))}
       </div>
+      
       <br/>
       <h1>Select Problems for Mashup</h1>
       <div>

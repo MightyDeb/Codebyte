@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function ProblemList() {
-  const username="Mighty_Deb"
+  const username= localStorage.getItem("user")
   const [allProblems,setAllProblems]= useState([])
   const [problemTag, setProblemTag] = useState("");
   const [problemRating, setProblemRating] = useState(800);
