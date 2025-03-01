@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Header from '../components/utils/Header';
 
-const MashupMaker = () => {
+const MashupMaker = ({socket}) => {
   const username= localStorage.getItem("user")
   const [allProblems, setAllProblems] = useState([]);
   const [selectedProblems, setSelectedProblems] = useState([]);
@@ -25,7 +26,7 @@ const MashupMaker = () => {
         if(isMounted){
           setAllProblems(problemsList.data.result.problems)
           setPreviousContests(contestsList.data.contestList)
-          console.log(contestsList)
+          
         }
       } catch (error) {
         console.error(error)
@@ -106,10 +107,15 @@ const MashupMaker = () => {
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Something went wrong')
     }
+    //handle notifications
+    socket.emit("newContest", {
+      username, problems, duration
+    })
   }
 
   return (
     <div>
+      
       <h2>Selected Problems</h2>
       <ul>
         {selectedProblems?.map((problem, index) => (

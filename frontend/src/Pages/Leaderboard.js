@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Header from "../components/utils/Header";
 
-function App() {
+function App({socket}) {
   const user= localStorage.getItem("user")
   const [leaderboard, setLeaderboard] = useState([]);
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
@@ -57,13 +58,16 @@ function App() {
   useEffect(() => {
     fetchLeaderboard();
   }, []);
-
-  const addFriend= ()=>{
-
+  
+  
+  const addFriend= async()=>{  
+    socket.emit("friendRequest", {sender: user, receiver: userDetails.handle})
   }
 
   return (
+    
     <div className="App" style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      
       <h1>Search User</h1>
       <div>
         <input

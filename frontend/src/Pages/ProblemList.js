@@ -20,7 +20,7 @@ function ProblemList() {
     .then((response)=> {
       if (response.data.status === "OK") {
         const solved = [];
-        response.data.result.forEach((submission) => {
+        response.data.result?.forEach((submission) => {
           if (submission.verdict === "OK") {
             const problem = submission.problem;
             solved.push(`${problem.contestId}-${problem.index}`); // Add to array

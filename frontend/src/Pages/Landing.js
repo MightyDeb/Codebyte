@@ -1,28 +1,12 @@
-import React from 'react'
-import axios from "axios"
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Box, Typography, Button, Grid } from '@mui/material';
 
-const Landing = () => {
-  const username= localStorage.getItem("user")
-  const navigate=useNavigate();
-  const handleLogout = async() => {
-    localStorage.removeItem("user")
-    try {
-      await axios.get('http://localhost:5000/api/user/logout').then(()=>{
-        navigate('/login'); 
-      })
-    } catch (error) {
-      console.error(error.response.data);
-    }
-   // Redirect to the login page
-  };
+function Landing() {
   return (
-    <div>
-      <p>Hello {username}</p>
-      <button onClick={handleLogout}>Logout</button>
-      <Link to={"/profile"}>ProfilePAGE</Link>
+    <div className='min-h-[70vh] flex items-center justify-center pt-30'>
+      <h1>HELLO</h1>
     </div>
-  )
+  );
 }
 
-export default Landing
+export default Landing;

@@ -14,6 +14,7 @@ const contestSchema= new mongoose.Schema({
   duration:{
     type: Number
   },
+  
   registrations:[
     {
       userId: {

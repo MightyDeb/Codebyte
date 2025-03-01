@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home';
 import ProblemList from './Pages/ProblemList';
@@ -17,35 +17,66 @@ import Motive from './Pages/Motive';
 import Notifications from './Pages/Notifications';
 import ProtectRoute from './components/auth/ProtectRoute';
 import { Toaster } from 'react-hot-toast';
+import {io} from 'socket.io-client';
+
+import Header from './components/utils/Header';
+import Footer from './components/utils/Footer';
 
 function App() {
   const user= localStorage.getItem("user");
-  
+  const [socket, setSocket]= useState(null)
+  useEffect(()=>{
+    setSocket(io('http://localhost:8000'))
+    socket?.on("contestCreated", (data) => {
+      console.log(data)
+    })
+    console.log(socket)
+  },[])
+  useEffect(()=>{
+    if(socket){
+      socket.emit('userOnline', user)
+    }
+  },[socket,user])
   return (
+    <>
+
+    
+    <div className='min-h-screen flex flex-col items-center justify-center overscroll-y-auto'>
     <Router>
+    <Header socket={socket} />
       <Routes>
-        
-        <Route element={<ProtectRoute user={user}/>}>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/motive" element={<Motive />} />
-          <Route path="/problems" element={<ProblemList />} />
-          <Route path="/contests" element={<ContestLive />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/mashup" element={<MashupMaker/>} />
-          <Route path="/comparison/:user1/:user2" element={<UserComparison/>} />
-          <Route path="/champs" element={<ProblemSolvers/>} />
-          <Route path="/notifications" element={<Notifications />} /> 
+        <Route element={
+            
+              <ProtectRoute user={user} /> }>
+              <Route path="/" element={<Landing/>} />
+              <Route path="/home" element={<Home socket={socket}/>} />
+              <Route path="/problems" element={<ProblemList socket={socket}/>} />
+              <Route path="/contests" element={<ContestLive socket={socket}/>} />
+              <Route path="/leaderboard" element={<Leaderboard socket={socket}/>} />
+              <Route path="/profile" element={<Profile socket={socket}/>} />
+              <Route path="/mashup" element={<MashupMaker socket={socket}/>} />
+              <Route path="/comparison/:user1/:user2" element={<UserComparison socket={socket}/>} />
+              <Route path="/champs" element={<ProblemSolvers socket={socket}/>} />
+              <Route path="/notifications" element={<Notifications/>} /> 
+          
+
         </Route>
+          
         <Route element={<ProtectRoute user={!user} redirect='/'/>}>
-            <Route path='/login' element={user ? <Landing/>:<Login/>} />
-            <Route path='/register' element={user ? <Landing/>:<Register/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/register' element={ <Register/>} />
         </Route>
-        <Route path="*" element={<h1>404 Not Found</h1>} />     
+            
+        
+        <Route path="*" element={<h1>404 Not Found</h1>} />   
+        
       </Routes>
       <Toaster position="bottom-center"/>
+      <Footer/> 
     </Router>
+    </div>
+     
+    </>
   );
 }
 
