@@ -41,7 +41,7 @@ function App() {
     <>
 
     
-    <div className='min-h-screen flex flex-col items-center justify-center overscroll-y-auto'>
+    <div className='min-h-screen flex flex-col items-center justify-center overscroll-y-auto bg-yellow-100'>
     <Router>
     <Header socket={socket} />
       <Routes>

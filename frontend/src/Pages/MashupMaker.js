@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Header from '../components/utils/Header';
+import pagination from '../components/utils/pagination';
+import { Button } from '@mui/material';
 
 const MashupMaker = ({socket}) => {
   const username= localStorage.getItem("user")
@@ -15,6 +17,13 @@ const MashupMaker = ({socket}) => {
   const [show,setShow]= useState(false)
   const [duration,setDuration]= useState(0)
   const [previousContest, setPreviousContests]= useState([])
+  const [currentPageAllProblems,setCurrentPageAllProblems]= useState(1)
+  const [totalPagesAllProblems,setTotalPagesAllProblems]= useState(1)
+  const [paginatedAllProblems,setPaginatedAllProblems]= useState([])
+  const [currentPageProblems,setCurrentPageProblems]= useState(1)
+  const [totalPagesProblems,setTotalPagesProblems]= useState(1)
+  const [paginatedProblems,setPaginatedProblems]= useState([])
+
   useEffect(() => {
     let isMounted= true;
     async function fetchData(){
@@ -88,6 +97,34 @@ const MashupMaker = ({socket}) => {
     }
   };
 
+  useEffect(()=>{
+    setPaginatedAllProblems(pagination({
+      data: allProblems, itemsPerPage: 10, start:(currentPageAllProblems - 1) * 10
+    }))
+    setTotalPagesAllProblems(Math.ceil(allProblems.length / 10))
+  },[allProblems,currentPageAllProblems])
+
+  useEffect(()=>{
+    setPaginatedProblems(pagination({
+      data: problems, itemsPerPage: 10, start:(currentPageProblems - 1) * 10
+    }))
+    setTotalPagesProblems(Math.ceil(problems.length / 10))
+  },[problems,currentPageProblems])
+
+  const paginationHandle=()=>{
+    setCurrentPageAllProblems(prev=> prev===totalPagesAllProblems ? 1 : prev+1)
+  }
+  const paginationHandle2=()=>{
+    setCurrentPageAllProblems(prev=> prev===1 ? totalPagesAllProblems : prev-1)
+  }
+
+  const paginationHandle3=()=>{
+    setCurrentPageProblems(prev=> prev===totalPagesProblems ? 1 : prev+1)
+  }
+  const paginationHandle4=()=>{
+    setCurrentPageProblems(prev=> prev===1 ? totalPagesProblems : prev-1)
+  }
+
   const createContest= async(e)=>{
     e.preventDefault();
     const problems= selectedProblems.map((problem)=>(
@@ -114,31 +151,44 @@ const MashupMaker = ({socket}) => {
   }
 
   return (
-    <div>
+    <div className='min-h-[70vh] flex flex-col items-center justify-center gap-7 p-4 mt-24'>
       
-      <h2>Selected Problems</h2>
+      <h2 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Selected Problems</h2>
+      {selectedProblems.length===0 && 
+      <p className='text-red-500 font-bold text-center'>NO QUESTIONS SELECTED</p>}
       <ul>
         {selectedProblems?.map((problem, index) => (
           <li key={index}>
-            {problem.name} (Contest ID: {problem.contestId}, Index: {problem.index})
+            <a className='font-semibold'
+              href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`}>
+                <span>{problem.name} (Rating: {problem.rating || 'unrated'}, Index: {problem.index})</span>
+              </a>
+            
           </li>
         ))}
       </ul>
-      <button onClick={()=>{
+      {selectedProblems.length>0 && <Button variant='contained' onClick={()=>{
           setShow(true)
-         console.log(selectedProblems)}}>CREATE CONTEST</button>
+        }}>CREATE CONTEST</Button>}
+      
       {show &&
-        <form>
-          <input type="number" placeholder="Set duration in minutes"  value={duration} onChange={(e) => setDuration(e.target.value)}/>
-          <button type="submit" onClick={createContest}>FINALISE</button>
+        <form className='flex flex-col md:flex-row items-center'>
+          <label for="duration" className='font-semibold underline'>Enter duration in minutes</label>
+          <input type="number" placeholder="Set duration in minutes"  value={duration} onChange={(e) => setDuration(e.target.value)} className='p-2 rounded-lg m-2'/>
+          <Button variant='contained' type="submit" onClick={createContest} sx={{
+            marginTop: '1rem'
+          }}>FINALISE</Button>
+          
         </form>
       }
       <br/>
-      <h1>Show previous contest</h1>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Show previous contest</h1>
+      <p className='font-semibold font-mono md:text-xl'>Created by you..</p>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
       {previousContest && previousContest.length>0 && previousContest.map((contest,index)=>{
         return(
-          <div>
-            <p>ContestNo: {index+1}</p>
+          <div className="bg-yellow-400 p-3 font-bold shadow-md border-5 border-black rounded-lg ">
+            <p className='border-b-2 border-black'>ContestNo: {index+1}</p>
             <p>Problem List</p>
             {contest.problems?.map((i)=>(
               <p>
@@ -149,16 +199,20 @@ const MashupMaker = ({socket}) => {
           </div>
         )
       })}
-      <h1>Find a problem</h1>
-      <div>
+      </div>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Find a problem</h1>
+      <div className="border-double border-4 border-blue-700 p-2 md:p-4 flex flex-col items-center">
+      <label for="tag" className="underline font-semibold">Problem Tag</label><br/>
         <input
           type="text"
           placeholder="Enter problem tag"
           value={problemTag}
           onChange={(e) => setProblemTag(e.target.value)}
           style={{ padding: "10px", width: "300px", marginRight: "10px" }}
-        />
+        /><br/>
+        <label for="rating" className="underline font-semibold">Problem Rating</label><br/>
         <input
+        id="rating"
           type="number"
           placeholder="Enter problem rating"
           value={problemRating}
@@ -166,42 +220,66 @@ const MashupMaker = ({socket}) => {
           style={{ padding: "10px", width: "300px", marginRight: "10px" }}
           min="800"
           max="3500"
-        />
-        <button
-          onClick={searchProblem}
-          disabled={loading}
-          style={{ padding: "10px 20px", cursor: "pointer" }}
-        >
-          {loading ? "Searching..." : "Search"}
-        </button>
+        /><br/><br/>
+        <Button
+                  onClick={searchProblem}
+                  disabled={loading}
+                  variant="contained"
+                >
+                  {loading ? "Searching..." : "Search"}
+                </Button>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
-        {problems.map((problem, index) => (
+        {paginatedProblems?.map((problem, index) => (
             <div key={index} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc' }}>
-              <input
+              <input className='mr-4'
               type="checkbox"
               checked={selectedProblems.includes(problem)}
               onChange={() => handleProblemSelect(problem)}
             />
-              <span>{problem.name} (Rating: {problem.rating || 'unrated'})</span>
+            <a className='font-semibold'
+              href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`}>
+                <span>{problem.name} (Rating: {problem.rating || 'unrated'})</span>
+              </a>
             </div>
           ))}
+          {paginatedProblems.length>0 &&
+        <div className="flex w-[100vw] justify-evenly">
+        <Button variant="text" onClick={paginationHandle3} sx={{
+          border: "solid 2px", fontWeight: 900
+        }}>NEXT ||</Button>
+        <Button variant="text" sx={{
+          border: "solid 2px", fontWeight: 900
+        }} onClick={paginationHandle4}> || Previous</Button>
+      </div>}
       </div>
       
       <br/>
-      <h1>Select Problems for Mashup</h1>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Select Problems for Mashup</h1>
       <div>
-        {allProblems.map((problem, index) => (
+        {paginatedAllProblems?.map((problem, index) => (
           <div key={index} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc' }}>
             <input
               type="checkbox"
               checked={selectedProblems.includes(problem)}
-              onChange={() => handleProblemSelect(problem)}
+              onChange={() => handleProblemSelect(problem)} className='mr-4'
             />
-            <span>{problem.name} (Rating: {problem.rating || 'unrated'})</span>
+            <a className='font-semibold'
+              href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`}>
+                <span>{problem.name} (Rating: {problem.rating || 'unrated'})</span>
+              </a>
+            
           </div>
         ))}
+        <div className="flex w-[100vw] justify-evenly">
+                        <Button variant="text" onClick={paginationHandle} sx={{
+                          border: "solid 2px", fontWeight: 900
+                        }}>NEXT ||</Button>
+                        <Button variant="text" sx={{
+                          border: "solid 2px", fontWeight: 900
+                        }} onClick={paginationHandle2}> || Previous</Button>
+                      </div>
       </div>
       
     </div>

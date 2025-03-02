@@ -6,6 +6,7 @@
     "@chakra-ui/react": "^2.10.6",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@google/generative-ai": "^0.22.0",
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
     "@radix-ui/themes": "^3.2.1",

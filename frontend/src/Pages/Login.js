@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <div className='border-double border-8 border-blue-700 flex flex-col items-center justify-center gap-4 p-4 mt-24'>
+    <div className=' min-h-[70vh] border-double border-8 border-blue-700 flex flex-col items-center justify-center gap-4 p-4 mt-24'>
       <h1 className='text-blue-700 font-bold underline text-4xl'>LOGIN</h1>
       <form onSubmit={handleSubmit} className='p-10 flex flex-col items-center justify-center gap-4'>
         <input 

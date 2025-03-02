@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Button } from "@mui/material";
+import pagination from "../components/utils/pagination";
 
 function ProblemList() {
   const username= localStorage.getItem("user")
@@ -10,6 +12,12 @@ function ProblemList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [solvedProblems, setSolvedProblems] = useState([]);
+  const [currentPageAllProblems,setCurrentPageAllProblems]= useState(1)
+  const [totalPagesAllProblems,setTotalPagesAllProblems]= useState(1)
+  const [paginatedAllProblems,setPaginatedAllProblems]= useState([])
+  const [currentPageProblems,setCurrentPageProblems]= useState(1)
+  const [totalPagesProblems,setTotalPagesProblems]= useState(1)
+  const [paginatedProblems,setPaginatedProblems]= useState([])
 
   useEffect(()=>{
     axios.get("https://codeforces.com/api/problemset.problems")
@@ -77,38 +85,74 @@ function ProblemList() {
     }
   };
 
+  useEffect(()=>{
+    setPaginatedAllProblems(pagination({
+      data: allProblems, itemsPerPage: 10, start:(currentPageAllProblems - 1) * 10
+    }))
+    setTotalPagesAllProblems(Math.ceil(allProblems.length / 10))
+  },[allProblems,currentPageAllProblems])
+
+  useEffect(()=>{
+    setPaginatedProblems(pagination({
+      data: problems, itemsPerPage: 10, start:(currentPageProblems - 1) * 10
+    }))
+    setTotalPagesProblems(Math.ceil(problems.length / 10))
+  },[problems,currentPageProblems])
+
+  const paginationHandle=()=>{
+    setCurrentPageAllProblems(prev=> prev===totalPagesAllProblems ? 1 : prev+1)
+  }
+  const paginationHandle2=()=>{
+    setCurrentPageAllProblems(prev=> prev===1 ? totalPagesAllProblems : prev-1)
+  }
+
+  const paginationHandle3=()=>{
+    setCurrentPageProblems(prev=> prev===totalPagesProblems ? 1 : prev+1)
+  }
+  const paginationHandle4=()=>{
+    setCurrentPageProblems(prev=> prev===1 ? totalPagesProblems : prev-1)
+  }
+
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Codeforces Problem Search</h1>
-      <div>
+    <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4 p-4 mt-24">
+      <h1 className="mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Codeforces Problem Search</h1>
+      <div className="border-double border-4 border-blue-700 p-2 md:p-4 flex flex-col items-center">
+        <label for="tag" className="underline font-semibold">Problem Tag</label><br/>
         <input
+        id="tag"
           type="text"
           placeholder="Enter problem tag"
           value={problemTag}
           onChange={(e) => setProblemTag(e.target.value)}
-          style={{ padding: "10px", width: "300px", marginRight: "10px" }}
+          style={{ padding: "10px", width: "300px", margin: "10px" }}
         />
+        <br/>
+        <label for="rating" className="underline font-semibold">Problem Rating</label><br/>
         <input
+          id="rating"
           type="number"
           placeholder="Enter problem rating"
           value={problemRating}
           onChange={(e) => setProblemRating(e.target.value)}
-          style={{ padding: "10px", width: "300px", marginRight: "10px" }}
+          style={{ padding: "10px", width: "300px", margin: "10px" }}
           
         />
-        <button
+        <br/><br/>
+        <Button
           onClick={searchProblem}
           disabled={loading}
-          style={{ padding: "10px 20px", cursor: "pointer" }}
+          variant="contained"
         >
           {loading ? "Searching..." : "Search"}
-        </button>
+        </Button>
       </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", fontWeight: 700 }}>{error}</p>}
 
-      <div style={{ marginTop: "20px" }}>
-        {problems.slice(0,50).map((problem, index) => {
+      
+
+      <div className="mt-7 flex flex-col items-center justify-center">
+        {paginatedProblems?.map((problem, index) => {
           const problemId = `${problem.contestId}-${problem.index}`;
           const isSolved = solvedProblems.includes(problemId);
           return(
@@ -120,6 +164,8 @@ function ProblemList() {
               marginBottom: "10px",
               borderRadius: "5px",
               backgroundColor: isSolved ? "#e0ffe0" : "#fff",
+              fontWeight: 600,
+              width: "90%"
             }}
           >
             <h3>{problem.name}</h3>
@@ -144,12 +190,24 @@ function ProblemList() {
 
           </div>
         )})}
+        {paginatedProblems.length>0 &&
+        <div className="flex w-[100vw] justify-evenly">
+        <Button variant="text" onClick={paginationHandle3} sx={{
+          border: "solid 2px", fontWeight: 900
+        }}>NEXT ||</Button>
+        <Button variant="text" sx={{
+          border: "solid 2px", fontWeight: 900
+        }} onClick={paginationHandle4}> || Previous</Button>
+      </div>}
       </div>
       <br/>
-      <h1>Codeforces Problems Set</h1>
-      <div style={{ marginTop: "20px" }}>
-        {allProblems.length===0 && <p>Loading...</p>}
-        {allProblems.map((problem, index) => {
+      <a href={'/mashup'}><Button variant="contained" sx={{
+        marginTop: '3rem'
+      }}>Why not create a contest?</Button></a>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Codeforces Problems Set</h1>
+      <div className="mt-20 flex flex-col items-center justify-center">
+        {paginatedAllProblems?.length===0 && <p>Loading...</p>}
+        {paginatedAllProblems?.map((problem, index) => {
           const problemId = `${problem.contestId}-${problem.index}`;
           const isSolved = solvedProblems.includes(problemId);
           return(
@@ -161,6 +219,8 @@ function ProblemList() {
               marginBottom: "10px",
               borderRadius: "5px",
               backgroundColor: isSolved ? "#e0ffe0" : "#fff",
+              fontWeight: 600,
+              width: "90%"
             }}
           >
             <h3>{problem.name}</h3>
@@ -178,12 +238,21 @@ function ProblemList() {
               href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "blue", textDecoration: "none" }}
+              style={{ color: "blue", textDecoration: "none" }} className="underline"
             >
               View Problem
             </a>
           </div>
-        )})}
+        )})
+        }
+        <div className="flex w-[100vw] justify-evenly">
+                <Button variant="text" onClick={paginationHandle} sx={{
+                  border: "solid 2px", fontWeight: 900
+                }}>NEXT ||</Button>
+                <Button variant="text" sx={{
+                  border: "solid 2px", fontWeight: 900
+                }} onClick={paginationHandle2}> || Previous</Button>
+              </div>
       </div>
     </div>
   );

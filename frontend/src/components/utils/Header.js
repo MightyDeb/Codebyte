@@ -3,7 +3,7 @@ import { Bell, CircleX, Cross, Ham, Menu } from 'lucide-react'
 import axios from 'axios'
 import Logo from "../../constants/pictures/codebyte.png"
 import { Button } from '@mui/material'
-import { a, redirect, useNavigate } from 'react-router-dom'
+import { redirect, useNavigate } from 'react-router-dom'
 
 const Header = ({socket}) => {
   
@@ -12,6 +12,7 @@ const Header = ({socket}) => {
   const [realTimeNotifications, setRealTimeNotifications]= useState([])
   const [open,setOpen]= useState(false)
   const [mobileView, setMobileView]= useState(false)
+
   useEffect(()=>{   
       let isMounted= true;
       async function fetchData(){
@@ -32,6 +33,7 @@ const Header = ({socket}) => {
       isMounted=false
     }
   },[])
+
   useEffect(()=>{
     console.log(socket)
     if(socket){
@@ -81,7 +83,7 @@ const Header = ({socket}) => {
   }
 
   return (
-    <div className='fixed  top-0 w-full bg-[#0f3b7c] text-white text-center p-4 flex justify-between items-center gap-2 h-[50px]'>
+    <div className='fixed  top-0 w-[100vw] bg-[#0f3b7c] text-white text-center p-4 flex justify-between items-center gap-2 h-[50px]'>
       <img src={Logo} alt="logo" className='h-10 w-10 inline-block'/>
       <button onClick={()=>setMobileView(!mobileView)} className='md:hidden'>
         {mobileView ? <CircleX /> : <Menu />}
@@ -92,7 +94,7 @@ const Header = ({socket}) => {
                     md:left-0 p-4 md:p-0  md:bg-transparent 
                     transition-all duration-500 ease-in-out transform ${mobileView ? 
                     'translate-x-0' : 'translate-x-full'
-                        } md:translate-x-0 ${mobileView ? 'text-blue-700' : 'text-white'}`}>
+                        } md:translate-x-0 ${mobileView && `bg-blue-700`}`}>
                         
         {!user && <a href={'/login'}><button className='block py-2 px-4 hover:font-semibold md:inline-block '>Login</button></a>}
         {!user && <a href={'/register'}><button className='block py-2 px-4 hover:font-semibold md:inline-block'>Register</button></a>}
@@ -123,7 +125,9 @@ const Header = ({socket}) => {
           </div>
 
         ))}
-        <button onClick={handleRead}>Mark as read</button>
+        <Button variant='contained' color='secondary'sx={{
+          marginBottom: '7%'
+        }} onClick={handleRead}>Mark as read</Button>
       </div>}
     </div>
   )

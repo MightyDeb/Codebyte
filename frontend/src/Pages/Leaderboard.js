@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Header from "../components/utils/Header";
+import { Button } from "@mui/material";
+import pagination from "../components/utils/pagination";
+import { Search } from "lucide-react";
+
 
 function App({socket}) {
   const user= localStorage.getItem("user")
@@ -10,6 +13,9 @@ function App({socket}) {
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const [userDetails, setUserDetails] = useState(null);
+  const [paginatedLeaderboard,setPaginatedLeaderboard]= useState([])
+  const [currentPage,setCurrentPage]= useState(1)
+  const [totalPages,setTotalPages]= useState(1)
 
   const searchUser = async () => {
     if (!username.trim()) {
@@ -60,94 +66,117 @@ function App({socket}) {
   }, []);
   
   
+  useEffect(()=>{
+    setPaginatedLeaderboard(pagination({
+      data: leaderboard, itemsPerPage: 10, start:(currentPage - 1) * 10
+    }))
+    setTotalPages(Math.ceil(leaderboard.length / 10))
+    console.log(paginatedLeaderboard)
+  },[leaderboard,currentPage])
+
   const addFriend= async()=>{  
     socket.emit("friendRequest", {sender: user, receiver: userDetails.handle})
   }
 
+  const paginationHandle=()=>{
+    setCurrentPage(prev=> prev===totalPages ? 1 : prev+1)
+  }
+  const paginationHandle2=()=>{
+    setCurrentPage(prev=> prev===1 ? totalPages : prev-1)
+  }
+
   return (
-    
-    <div className="App" style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      
-      <h1>Search User</h1>
-      <div>
+    <div className='min-h-[70vh] flex flex-col items-center justify-center gap-7 p-4 mt-24'>
+      <h1 className="mt-2 text-2xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2">
+        Search User <Search/>
+      </h1>
+      <div className="flex flex-col md:flex-row items-center gap-5">
         <input
           type="text"
           placeholder="Enter Codeforces username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{ padding: "10px", width: "300px", marginRight: "10px" }}
+          className="p-2 w-72 mr-2 border border-gray-300 rounded-md"
         />
         <button
           onClick={searchUser}
           disabled={loadingUser}
-          style={{ padding: "10px 20px", cursor: "pointer" }}
+          className="p-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 hover:scale-105"
         >
           {loadingUser ? "Searching..." : "Search"}
         </button>
       </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", fontWeight: 700 }}>{error}</p>}
 
       {userDetails && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>User Details:</h2>
+        <div className='flex flex-col items-center justify-center gap-5 border-double border-4 p-3 md:p-5 border-blue-950 bg-yellow-400 rounded-lg shadow-lg pb-7'>
+          <h3 className='uppercase font-extrabold text-4xl hover:animate-bounce border-b-2 border-black'>User Details</h3>
           <p>
-            <strong>Handle:</strong> {userDetails.handle}
+            <strong className='underline font-mono'>Handle:</strong> {userDetails.handle}
           </p>
           <p>
-            <strong>Rating:</strong> {userDetails.rating || "N/A"}
+            <strong className='underline font-mono'>Rating:</strong> {userDetails.rating || "N/A"}
           </p>
           <p>
-            <strong>Rank:</strong> {userDetails.rank || "N/A"}
+            <strong className='underline font-mono'>Rank:</strong> {userDetails.rank || "N/A"}
           </p>
           <p>
-            <strong>Max Rating:</strong> {userDetails.maxRating || "N/A"}
+            <strong className='underline font-mono'>Max Rating:</strong> {userDetails.maxRating || "N/A"}
           </p>
           <p>
-            <strong>Max Rank:</strong> {userDetails.maxRank || "N/A"}
+            <strong className='underline font-mono'>Max Rank:</strong> {userDetails.maxRank || "N/A"}
           </p>
           <p>
-            <strong>Contribution:</strong> {userDetails.contribution || "N/A"}
+            <strong className='underline font-mono'>Contribution:</strong> {userDetails.contribution || "N/A"}
           </p>
           <p>
-            <strong>Last Online:</strong>{" "}
+            <strong className='underline font-mono'>Last Online:</strong>{" "}
             {new Date(userDetails.lastOnlineTimeSeconds * 1000).toLocaleString()}
           </p>
           <p>
-            <strong>Registered:</strong>{" "}
+            <strong className='underline font-mono'>Registered:</strong>{" "}
             {new Date(userDetails.registrationTimeSeconds * 1000).toLocaleString()}
           </p>
-          <button type="submit" onClick={addFriend}>Add to friend</button>
+          <Button variant="contained" type="submit" onClick={addFriend}>Add to Friend</Button>
         </div>
       )}
       <br/>
-      <h1>Codeforces Leaderboard</h1>
+      <h1 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700'>Codeforces Leaderboard</h1>
 
       {loadingLeaderboard && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
+      <table style={{ width: "98vw", borderCollapse: "collapse", marginTop: "20px" }}>
         <thead>
-          <tr style={{ backgroundColor: "#f2f2f2" }}>
+          <tr style={{ backgroundColor: "#2563eb", color: "white" }}>
             <th style={{ padding: "10px", border: "1px solid #ddd" }}>Rank</th>
             <th style={{ padding: "10px", border: "1px solid #ddd" }}>Handle</th>
             <th style={{ padding: "10px", border: "1px solid #ddd" }}>Rating</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Max Rating</th>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Rank</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }} className="hidden md:table-cell">Max Rating</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }} className="hidden md:table-cell">Position</th>
           </tr>
         </thead>
         <tbody>
-          {leaderboard?.map((user, index) => (
-            <tr key={user.handle} style={{ borderBottom: "1px solid #ddd" }}>
-              <td style={{ padding: "10px", textAlign: "center" }}>{index + 1}</td>
-              <td style={{ padding: "10px", textAlign: "center" }}>{user.handle}</td>
-              <td style={{ padding: "10px", textAlign: "center" }}>{user.rating}</td>
-              <td style={{ padding: "10px", textAlign: "center" }}>{user.maxRating}</td>
-              <td style={{ padding: "10px", textAlign: "center" }}>{user.rank}</td>
-            </tr>
-          ))}
+          {paginatedLeaderboard?.map((user, index) => (
+              <tr key={user.handle} style={{ borderBottom: "1px solid #ddd", fontWeight: 500 }}>
+                <td style={{ padding: "10px", textAlign: "center" }}>{(currentPage-1)*10+ index+ 1}</td>
+                <td style={{ padding: "10px", textAlign: "center" }}>{user.handle}</td>
+                <td style={{ padding: "10px", textAlign: "center" }}>{user.rating}</td>
+                <td style={{ padding: "10px", textAlign: "center" }} className="hidden md:table-cell">{user.maxRating}</td>
+                <td style={{ padding: "10px", textAlign: "center" }} className="hidden md:table-cell">{user.rank}</td>
+              </tr>
+            )
+          )} 
         </tbody>
       </table>
+      <div className="flex w-[100vw] justify-evenly">
+        <Button variant="text" onClick={paginationHandle} sx={{
+          border: "solid 2px", fontWeight: 900
+        }}>NEXT ||</Button>
+        <Button variant="text" sx={{
+          border: "solid 2px", fontWeight: 900
+        }} onClick={paginationHandle2}> || Previous</Button>
+      </div>
     </div>
   );
 }
