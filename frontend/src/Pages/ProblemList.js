@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import pagination from "../components/utils/pagination";
+import { Dumbbell, Search } from "lucide-react";
 
 function ProblemList() {
   const username= localStorage.getItem("user")
@@ -115,7 +116,7 @@ function ProblemList() {
 
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4 p-4 mt-24">
-      <h1 className="mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Codeforces Problem Search</h1>
+      <h1 className="mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2">Codeforces Problem Search <Search/></h1>
       <div className="border-double border-4 border-blue-700 p-2 md:p-4 flex flex-col items-center">
         <label for="tag" className="underline font-semibold">Problem Tag</label><br/>
         <input
@@ -204,7 +205,7 @@ function ProblemList() {
       <a href={'/mashup'}><Button variant="contained" sx={{
         marginTop: '3rem'
       }}>Why not create a contest?</Button></a>
-      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Codeforces Problems Set</h1>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2">Codeforces Problems Set <Dumbbell/></h1>
       <div className="mt-20 flex flex-col items-center justify-center">
         {paginatedAllProblems?.length===0 && <p>Loading...</p>}
         {paginatedAllProblems?.map((problem, index) => {

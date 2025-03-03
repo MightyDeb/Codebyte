@@ -29,8 +29,10 @@ const Login = () => {
   };
 
   return (
-    <div className=' min-h-[70vh] border-double border-8 border-blue-700 flex flex-col items-center justify-center gap-4 p-4 mt-24'>
-      <h1 className='text-blue-700 font-bold underline text-4xl'>LOGIN</h1>
+    <div className=' min-h-[70vh] border-double border-8 border-blue-700 flex flex-col items-center justify-center gap-4 p-4 mt-24' style={{
+      backgroundImage: `linear-gradient(45deg, #5514B4, #FF80FF)`
+    }}>
+      <h1 className='text-white font-bold underline text-4xl'>LOGIN</h1>
       <form onSubmit={handleSubmit} className='p-10 flex flex-col items-center justify-center gap-4'>
         <input 
           type="email" 
@@ -56,12 +58,12 @@ const Login = () => {
         <button 
           disabled={isLoading} 
           type="submit" 
-          className='w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50'
+          className='w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 border-white border-2 hover:scale-105' 
         >
           Login
         </button>
       </form>
-      <a href={'/register'}><p className='text-blue-700 font-bold hover:scale-105'>New registration? Sign-up</p></a>
+      <a href={'/register'}><p className='text-white font-bold hover:scale-105'>New registration? Sign-up</p></a>
     </div>
   );
 };

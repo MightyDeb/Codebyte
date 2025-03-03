@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
-import Hero from '../constants/pictures/hero.png'
+import Hero from '../constants/pictures/hero.jpg'
+import Filler from '../constants/pictures/filler.gif'
 import { GoogleGenerativeAI } from "@google/generative-ai";
 const Home = () => {
   const username= localStorage.getItem("user")
@@ -80,28 +81,29 @@ const Home = () => {
         width: '100vw',
         textAlign: 'center',
         padding: '10px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        backgroundImage: `linear-gradient(45deg, #5514B4, #FF80FF)`
       }}>{`Welcome ${username}`}</Typography>
       <div className='w-[100vw] bg-gray-200 flex items-center justify-center py-3 mb-2'>
       <img src={Hero} className='max-w-[70vw] h-auto mt-0 ' alt='Hero'/></div>
-      <div className='flex gap-10 flex-col md:flex-row justify-around items-center mt-10'>
-        <div className='p-4 border-double border-2 border-blue-700 '>
+      <div className='flex gap-10 flex-col md:flex-row justify-around items-center mt-10 bg-sky-100 w-[95vw] p-4'>
+        <div className='p-4 border-double border-2 border-blue-700 hover:scale-105'>
           <h1 className='font-bold uppercase border-b-2 border-blue-800 text-blue-800 animate-bounce'>
             View Your Profile
           </h1>
           <div className='mt-2 font-bold'>
-            <h5>{`Username:  ${userInfo?.handle}`}</h5>
+          <h5>{`Username:  ${userInfo?.handle}`}</h5>
             <h5>{`CF Rating: ${userInfo?.rating}`}</h5>
-            <h5>{`Rating: ${userInfo?.rating}`}</h5>
             <h5>{`Rank: ${userInfo?.rank}`}</h5>
+            <h5>Welcome!</h5>
           </div>
           <br/>
           <a href={'/profile'}>
             <Button variant='outlined' color='primary'>View More</Button>
           </a>
-
         </div>
-        <div className='p-4 border-double border-2 border-blue-700 '>
+        <div><img src={Filler} className='md:hidden h-40 w-40'/></div>
+        <div className='p-4 border-double border-2 border-blue-700 hover:scale-105'>
           <h1 className='font-bold uppercase border-b-2 border-blue-800 text-blue-800 animate-bounce'>GIVE A CONTEST</h1>
           <br/>
           <div className='grid grid-cols-2 mb-8'>
@@ -113,7 +115,10 @@ const Home = () => {
             <Button variant='outlined' color='primary'>View More</Button>
           </a>
         </div>
-        <div className='p-4 border-double border-2 border-blue-700 '>
+        <div>
+        <img src={Filler} className='md:hidden h-40 w-40'/>
+        </div>
+        <div className='p-4 border-double border-2 border-blue-700 hover:scale-105'>
           <h1 className='font-bold uppercase border-b-2 border-blue-800 text-blue-800 animate-bounce'>
             Practice Problems
           </h1>
@@ -137,7 +142,13 @@ const Home = () => {
       </div>
       <div className='text-center text-white bg-blue-700 mt-10 p-7'>
         <h1 className='font-bold uppercase border-b-2 border-white my-4 animate-pulse '>ABOUT</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Devbits 2025, a flagship hackathon of EES Fest Udyam, was an exhilarating platform for innovation and collaboration, bringing together tech enthusiasts to solve real-world challenges. The hackathon's problem statement revolved around creating a competitive coding arena that leveraged the Codeforces API to enable real-time mashup creation, problem-solving, and user comparison. This platform aimed to revolutionize the way coders practice and compete by providing a seamless, interactive, and dynamic environment for coding enthusiasts.
+
+Our team, comprising Debapriya Maity, Dhairya Arora, and Utkarsh Agarwal, took on this challenge with enthusiasm and determination. We designed a robust system that allowed users to create custom mashups, solve problems in real-time, and compare their performance with others. The platform integrated features like real-time leaderboard updates, problem recommendations, and user performance analytics, making it a one-stop solution for competitive coders. By utilizing the Codeforces API, we ensured access to a vast repository of problems and user data, enhancing the platform's functionality and user experience.
+
+The hackathon was not just about coding but also about teamwork, creativity, and problem-solving under pressure. It was an incredible learning experience, and we are proud of what we achieved together. Devbits 2025 will always remain a memorable milestone in our journey as developers and innovators.
+
+P.S.: Our project aimed to make competitive coding more accessible, engaging, and fun for everyone!</p>
       </div>
     </div>
   )

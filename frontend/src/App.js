@@ -38,7 +38,7 @@ function App() {
     <>
 
     
-    <div className='min-h-screen flex flex-col items-center justify-center overscroll-y-auto bg-yellow-100'>
+    <div className='min-h-screen flex flex-col items-center justify-center overscroll-y-auto bg-gradient-to-r from-white to-gray-300'>
     <Router>
     <Header socket={socket} />
       <Routes>

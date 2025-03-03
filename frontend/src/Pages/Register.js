@@ -27,8 +27,9 @@ const Register = () => {
   };
 
   return (
-    <div className='border-double border-8 border-blue-700 flex flex-col items-center justify-center gap-4 p-4 mt-24'>
-      <h1 className='text-blue-700 font-bold underline text-4xl'>REGISTER</h1>
+    <div className='border-double border-8 border-blue-700 flex flex-col items-center justify-center gap-4 p-4 mt-24' style={{
+      backgroundImage: `linear-gradient(45deg, #5514B4, #FF80FF)`}}>
+      <h1 className='text-white font-bold underline text-4xl'>REGISTER</h1>
       <form onSubmit={handleSubmit} className='p-10 flex flex-col items-center justify-center gap-4'>
         <input type="text" placeholder="Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'/>
         <br/>
@@ -38,9 +39,9 @@ const Register = () => {
         <br/>
         <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'/>
         <br/>
-        <button disabled={isLoading} type="submit" className='w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50'>Register</button>
+        <button disabled={isLoading} type="submit" className='w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50  border-white border-2 hover:scale-105'>Register</button>
       </form>
-      <a href={'/login'}><p className='text-blue-700 font-bold hover:scale-105'>Already an user? Sign-in</p></a>
+      <a href={'/login'}><p className='text-white font-bold hover:scale-105'>Already an user? Sign-in</p></a>
     </div>
     
   );

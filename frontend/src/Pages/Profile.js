@@ -3,7 +3,8 @@ import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Button, Typography } from '@mui/material';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import {format} from 'date-fns'
+import { ChartSpline } from 'lucide-react';
 
 
 
@@ -105,7 +106,7 @@ const Profile = () => {
           <p className='underline font-mono'>Rank: </p>
           <p>{userInfo.rank}</p>
           <p className='underline font-mono'>Date of registration: </p>
-          <p>{localInfo.createdAt}</p>
+          <p>{format(new Date(localInfo.createdAt), 'MMMM do, yyyy H:mm a')}</p>
         </div>
         <img src={localInfo.profileAvatar} alt="User Avatar" className='border-black bolder-solid border-2'/>
       </div>
@@ -126,7 +127,7 @@ const Profile = () => {
             )
           })}
           </div>
-          <h2 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700'>Rating Curve</h2>
+          <h2 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2'>Rating Curve <ChartSpline/></h2>
           <div style={{ width: '100%', height: '400px' }}>
             <ResponsiveContainer>
               <LineChart
@@ -172,3 +173,7 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
+//ulta contest
+//user comparison (friends)

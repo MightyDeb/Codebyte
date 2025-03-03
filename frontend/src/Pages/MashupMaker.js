@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import Header from '../components/utils/Header';
 import pagination from '../components/utils/pagination';
 import { Button } from '@mui/material';
+import { EggFried, FilePen, Flag, Search } from 'lucide-react';
 
 const MashupMaker = ({socket}) => {
   const username= localStorage.getItem("user")
@@ -153,7 +154,7 @@ const MashupMaker = ({socket}) => {
   return (
     <div className='min-h-[70vh] flex flex-col items-center justify-center gap-7 p-4 mt-24'>
       
-      <h2 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Selected Problems</h2>
+      <h2 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2">Selected Problems <Flag/></h2>
       {selectedProblems.length===0 && 
       <p className='text-red-500 font-bold text-center'>NO QUESTIONS SELECTED</p>}
       <ul>
@@ -182,7 +183,7 @@ const MashupMaker = ({socket}) => {
         </form>
       }
       <br/>
-      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Show previous contest</h1>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700  flex gap-2">Show previous contest <FilePen/></h1>
       <p className='font-semibold font-mono md:text-xl'>Created by you..</p>
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
       {previousContest && previousContest.length>0 && previousContest.map((contest,index)=>{
@@ -203,7 +204,7 @@ const MashupMaker = ({socket}) => {
         )
       })}
       </div>
-      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Find a problem</h1>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2">Find a problem <Search/></h1>
       <div className="border-double border-4 border-blue-700 p-2 md:p-4 flex flex-col items-center">
       <label for="tag" className="underline font-semibold">Problem Tag</label><br/>
         <input
@@ -235,14 +236,14 @@ const MashupMaker = ({socket}) => {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
         {paginatedProblems?.map((problem, index) => (
-            <div key={index} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc' }}>
+            <div key={index} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc' }} className='bg-sky-200'>
               <input className='mr-4'
               type="checkbox"
               checked={selectedProblems.includes(problem)}
               onChange={() => handleProblemSelect(problem)}
             />
             <a className='font-semibold'
-              href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`}>
+              href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`} target='_blank'>
                 <span>{problem.name} (Rating: {problem.rating || 'unrated'})</span>
               </a>
             </div>
@@ -259,17 +260,17 @@ const MashupMaker = ({socket}) => {
       </div>
       
       <br/>
-      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700">Select Problems for Mashup</h1>
+      <h1 className="mt-10 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2">Select Problems for Mashup <EggFried/></h1>
       <div>
         {paginatedAllProblems?.map((problem, index) => (
-          <div key={index} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc' }}>
+          <div key={index} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc' }} className=' bg-sky-200'>
             <input
               type="checkbox"
               checked={selectedProblems.includes(problem)}
               onChange={() => handleProblemSelect(problem)} className='mr-4'
             />
             <a className='font-semibold'
-              href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`}>
+              href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`} target='_blank'>
                 <span>{problem.name} (Rating: {problem.rating || 'unrated'})</span>
               </a>
             

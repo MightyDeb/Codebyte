@@ -73,3 +73,24 @@
   50% { border-color: orange; }
 }
 
+.line{
+  animation: 
+    line-progress 4s infinite;
+}
+
+.landing-button{
+  animation: 
+    blink 3s infinite
+}
+
+@keyframes line-progress{
+  from { border: none }
+  to { border-bottom: rgb(20, 20, 188) solid 5px;
+        }
+}
+
+@keyframes blink{
+  from,to { scale: 1.3 }
+  50% {scale: 1.1}
+}
+

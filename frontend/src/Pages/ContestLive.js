@@ -92,6 +92,7 @@ const ContestLive = () => {
       clearInterval(intervalRef.current)
       setIsRunning(false)
       alert("Your time is up")
+      handleSubmission()
     }
     return ()=> clearInterval(intervalRef.current)
   },[isRunning,time])
@@ -188,9 +189,7 @@ const ContestLive = () => {
     setTime(0)
     setIsRunning(false)
     handleSubmission()
-    setTimeout(() => {
-    }, 5000);
-    redirect(`/contest/${id}`)
+   
   }
 
   return (
@@ -285,4 +284,5 @@ const ContestLive = () => {
 
 export default ContestLive
 
-//local and global variables are not matching , use state problem
+//local and global variables are not matching , use state problem, solved and penalty not being updated in useState
+//refresh page after auto-sumit/submit

@@ -83,8 +83,8 @@ const Header = ({socket}) => {
   }
 
   return (
-    <div className='fixed  top-0 w-[100vw] bg-[#0f3b7c] text-white text-center p-4 flex justify-between items-center gap-2 h-[50px]'>
-      <img src={Logo} alt="logo" className='h-10 w-10 inline-block'/>
+    <div className='fixed  top-0 w-[100vw] bg-[#0f3b7c] opacity-80 text-white text-center p-4 flex justify-between items-center gap-2 h-[50px] z-11'>
+      <a href='/'><img src={Logo} alt="logo" className='h-10 w-10 inline-block'/></a>
       <button onClick={()=>setMobileView(!mobileView)} className='md:hidden'>
         {mobileView ? <CircleX /> : <Menu />}
       </button>
@@ -114,14 +114,14 @@ const Header = ({socket}) => {
       {open && notifications.length+realTimeNotifications.length>0 && <div className='notifications max-h-[80vh] overflow-scroll z-100'>
         {notifications.map((notification,index)=>(
           <div key={index} className='notification'>
-            <span>{notification}</span>
-            {notification.type==="friendRequest" && <button onClick={addFriendHandler}>Accept</button>}
+            <span className='font-semibold'>{notification}</span>
+            {notification.type==="friendRequest" && <button onClick={addFriendHandler} className='bg-green-400 p-1 uppercase font-semibold ml-2 rounded-s-md'>Accept</button>}
           </div>
         ))}
         {realTimeNotifications.map((notification,index)=>(
           <div key={index} className='notification'>
-            <span>{notification.message}</span>
-            {notification.type==="friendRequest" && <button onClick={addFriendHandler}>Accept</button>}
+            <span className='font-semibold'>{notification.message}</span>
+            {notification.type==="friendRequest" && <button onClick={addFriendHandler} className='bg-green-400 p-1 uppercase font-semibold ml-2 rounded-s-md'>Accept</button>}
           </div>
 
         ))}

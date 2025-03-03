@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import pagination from "../components/utils/pagination";
-import { Search } from "lucide-react";
+import { Boxes, Search } from "lucide-react";
 
 
 function App({socket}) {
@@ -101,7 +101,7 @@ function App({socket}) {
         <button
           onClick={searchUser}
           disabled={loadingUser}
-          className="p-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 hover:scale-105"
+          className="p-2 px-4 bg-blue-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-400 hover:scale-105"
         >
           {loadingUser ? "Searching..." : "Search"}
         </button>
@@ -142,7 +142,7 @@ function App({socket}) {
         </div>
       )}
       <br/>
-      <h1 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700'>Codeforces Leaderboard</h1>
+      <h1 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2'>Codeforces Leaderboard <Boxes/></h1>
 
       {loadingLeaderboard && <p>Loading...</p>}
 
