@@ -121,3 +121,23 @@ export const getUserData= async(req,res,next)=>{
     next(error)
   }  
 }
+
+export const getDetailsViaId= async(req,res,next)=>{
+  try{
+    const {id}= req.params
+    if(!id){
+      return next(new ErrorHandler('No ID entered',400))
+    }
+    const user= await User.findById(id)
+    if(!user){
+      return next(new ErrorHandler('No such user exists',400))
+    }
+    return res.status(200).json({
+      success: true,
+      "name": user.name,
+      "username": user.username
+    })
+  } catch(error){
+    next(error)
+  }
+}

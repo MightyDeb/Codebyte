@@ -187,16 +187,19 @@ const MashupMaker = ({socket}) => {
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
       {previousContest && previousContest.length>0 && previousContest.map((contest,index)=>{
         return(
-          <div className="bg-yellow-400 p-3 font-bold shadow-md border-5 border-black rounded-lg ">
-            <p className='border-b-2 border-black'>ContestNo: {index+1}</p>
-            <p>Problem List</p>
-            {contest.problems?.map((i)=>(
-              <p>
-                {i.contestId}-{i.index}
-              </p>
-            ))}
-            <p>No. of registrations: {contest.registrations.length}</p>
-          </div>
+          <a href={`/contest/${contest._id}`}>
+            <div className="bg-yellow-400 p-3 font-bold shadow-md border-5 border-black rounded-lg ">
+          <p className='border-b-2 border-black'>ContestNo: {index+1}</p>
+          <p>Problem List</p>
+          {contest.problems?.map((i)=>(
+            <p>
+              {i.contestId}-{i.index}
+            </p>
+          ))}
+          <p>No. of registrations: {contest.registrations.length}</p>
+        </div>
+        </a>
+          
         )
       })}
       </div>

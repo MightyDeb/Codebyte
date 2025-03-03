@@ -21,6 +21,9 @@ const contestSchema= new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
+      username: {
+        type: String
+      },
       problemsSolved:[
         {
           contestId: {type: String},

@@ -101,7 +101,7 @@ const Header = ({socket}) => {
         {user && <a href={'/home'}><button className='block py-2 px-4  hover:font-semibold md:inline-block'>Home</button></a>}
         {user && <a href={'/profile'}><button className='block py-2 px-4  hover:font-semibold md:inline-block'>Profile</button></a>}
         {user && <a href={'/leaderboard'}><button className='block py-2 px-4  hover:font-semibold md:inline-block'>Leaderboard</button></a>}
-        {user && <a href={'/contests'}><button className='block py-2 px-4  hover:font-semibold md:inline-block'>Contests</button></a>}
+        {user && <a href={'/mashup'}><button className='block py-2 px-4  hover:font-semibold md:inline-block'>Contests</button></a>}
         {user && <a href={'/problems'}><button className='block py-2 px-4  hover:font-semibold md:inline-block'>Practice</button></a>}
         {user && <button className='block py-2 px-4 hover:font-semibold  md:inline-block' onClick={handleLogout}>Logout</button>}
       </div>
@@ -111,7 +111,7 @@ const Header = ({socket}) => {
          <div className='counter'>{notifications.length+realTimeNotifications.length>0 && notifications.length+realTimeNotifications.length}</div>
         </div>
       </div>
-      {open && notifications.length+realTimeNotifications.length>0 && <div className='notifications'>
+      {open && notifications.length+realTimeNotifications.length>0 && <div className='notifications max-h-[80vh] overflow-scroll z-100'>
         {notifications.map((notification,index)=>(
           <div key={index} className='notification'>
             <span>{notification}</span>

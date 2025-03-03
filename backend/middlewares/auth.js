@@ -4,7 +4,7 @@ import User from "../models/User.js"
 
 export const isAuthenticated=(req,res,next)=>{
   try {
-    const token= req.cookies.token
+    const token= req.cookies.token 
     console.log(token)
     if(!token){
       return next(new ErrorHandler('Please login to access the route', 401))

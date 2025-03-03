@@ -9,12 +9,9 @@ import Profile from './Pages/Profile';
 import './App.css';
 import MashupMaker from './Pages/MashupMaker';
 import UserComparison from './Pages/UserComaprison';
-import ProblemSolvers from './Pages/ProblemSolvers';
 import Landing from './Pages/Landing';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
-import Motive from './Pages/Motive';
-import Notifications from './Pages/Notifications';
 import ProtectRoute from './components/auth/ProtectRoute';
 import { Toaster } from 'react-hot-toast';
 import {io} from 'socket.io-client';
@@ -45,19 +42,16 @@ function App() {
     <Router>
     <Header socket={socket} />
       <Routes>
-        <Route element={
-            
+        <Route element={       
               <ProtectRoute user={user} /> }>
               <Route path="/" element={<Landing/>} />
-              <Route path="/home" element={<Home socket={socket}/>} />
-              <Route path="/problems" element={<ProblemList socket={socket}/>} />
-              <Route path="/contests" element={<ContestLive socket={socket}/>} />
+              <Route path="/home" element={<Home/>} />
+              <Route path="/problems" element={<ProblemList />} />
+              <Route path="/contest/:id" element={<ContestLive socket={socket}/>} />
               <Route path="/leaderboard" element={<Leaderboard socket={socket}/>} />
-              <Route path="/profile" element={<Profile socket={socket}/>} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/mashup" element={<MashupMaker socket={socket}/>} />
               <Route path="/comparison/:user1/:user2" element={<UserComparison socket={socket}/>} />
-              <Route path="/champs" element={<ProblemSolvers socket={socket}/>} />
-              <Route path="/notifications" element={<Notifications/>} /> 
           
 
         </Route>

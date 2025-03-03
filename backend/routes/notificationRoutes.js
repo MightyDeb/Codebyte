@@ -5,8 +5,9 @@ import { getNotification, updateNotification } from "../controllers/notification
 
 const app= express.Router()
 
-app.use(isAuthenticated)
-app.get('/notification', getNotification)
 app.put('/updateNotification', updateNotification)
+
+app.get('/notification', getNotification)
+
 
 export default app;

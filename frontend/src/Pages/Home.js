@@ -9,6 +9,7 @@ const Home = () => {
   const username= localStorage.getItem("user")
   const [userInfo,setUserInfo]= useState(null)
   const [problems,setProblems]= useState([])
+  const [contests,setContests]= useState([])
   const navigate=useNavigate();
   const genAI = new GoogleGenerativeAI(process.env.API_KEY || "AIzaSyB28CnLO6zpajpuV4Y6Qv5p5Svim51ExD4");
   const model = genAI.getGenerativeModel({
@@ -52,12 +53,11 @@ const Home = () => {
     async function fetchData() {
       try {
         const userInfoResponse = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
-        // const contestResponse= await axios.get('http://localhost:5000/api/contest//unattemptedContests')
-
+        const contestResponse= await axios.get('http://localhost:5000/api/contest/unattemptedContests')
+        console.log(contestResponse)
         if (isMounted) {
-          setUserInfo(userInfoResponse.data.result[0]);
-          
-          //console.log(contestResponse)
+          setUserInfo(userInfoResponse.data.result[0]);         
+          setContests(contestResponse.data.unattemptedContests)
         }
       }catch(error){
         console.log(error)
@@ -104,6 +104,11 @@ const Home = () => {
         <div className='p-4 border-double border-2 border-blue-700 '>
           <h1 className='font-bold uppercase border-b-2 border-blue-800 text-blue-800 animate-bounce'>GIVE A CONTEST</h1>
           <br/>
+          <div className='grid grid-cols-2 mb-8'>
+          {contests?.map((contest,index)=>(
+            <a href={`/contest/${contest._id}`}><p id={`${index}`} className='text-blue-400 underline hover:text-sky-950 font-semibold'>{contest._id.slice(3,9)}</p></a>
+          ))}
+          </div>
           <a href={'/mashup'}>
             <Button variant='outlined' color='primary'>View More</Button>
           </a>
@@ -118,7 +123,7 @@ const Home = () => {
           {problems.length > 0 &&
             problems.map((problem) => (
               <a key={`${problem.contestId}-${problem.index}`} href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`}>
-                <span className='text-blue-400 font-bold underline'>{`${problem.contestId}-${problem.index}`}</span>
+                <span className='text-blue-400 font-bold underline hover:text-sky-950 '>{`${problem.contestId}-${problem.index}`}</span>
               </a>
             ))
             
