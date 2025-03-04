@@ -98,11 +98,14 @@ export const addFriend= async(req,res,next)=>{
 
 export const getUserData= async(req,res,next)=>{
   try {
+    
     const {username} = req.params
+    
     if(!username){
-      return next(new ErrorHandler('No username attached',400))
+      return next(new ErrorHandler('No userID attached',400))
     }
-    const user= await User.find({username})
+    const user= await User.findOne({username})
+    
     if(!user){
       return next(new ErrorHandler('No such user exists',400))
     }
@@ -113,8 +116,10 @@ export const getUserData= async(req,res,next)=>{
     res.status(200).json({
       success: true,
       details:{
-        "name": user.name,
-        "username": username,       
+        name: user.name,
+        username: username,
+        CFrating:  fetchedData.rating,
+        rank: fetchedData.rank,         
       }
     })
   } catch (error) {

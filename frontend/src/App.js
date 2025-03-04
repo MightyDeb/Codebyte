@@ -8,11 +8,11 @@ import Leaderboard from './Pages/Leaderboard';
 import Profile from './Pages/Profile';
 import './App.css';
 import MashupMaker from './Pages/MashupMaker';
-import UserComparison from './Pages/UserComaprison';
 import Landing from './Pages/Landing';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import ProtectRoute from './components/auth/ProtectRoute';
+import Comparison from './Pages/Comparison';
 import { Toaster } from 'react-hot-toast';
 import {io} from 'socket.io-client';
 
@@ -51,9 +51,7 @@ function App() {
               <Route path="/leaderboard" element={<Leaderboard socket={socket}/>} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/mashup" element={<MashupMaker socket={socket}/>} />
-              <Route path="/comparison/:user1/:user2" element={<UserComparison socket={socket}/>} />
-          
-
+              <Route path="/friend/:friendId" element={<Comparison/>} />
         </Route>
           
         <Route element={<ProtectRoute user={!user} redirect='/'/>}>

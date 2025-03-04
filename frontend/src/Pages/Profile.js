@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Button, Typography } from '@mui/material';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import {format} from 'date-fns'
-import { ChartSpline } from 'lucide-react';
+import { ChartSpline, Users } from 'lucide-react';
 
 
 
@@ -14,6 +14,7 @@ const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [historyInfo, setHistoryInfo]= useState([])
   const [swot,setSwot]= useState(null)
+  const [friends,setFriends]= useState([])
   const genAI = new GoogleGenerativeAI(process.env.API_KEY || "AIzaSyB28CnLO6zpajpuV4Y6Qv5p5Svim51ExD4");
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
@@ -80,6 +81,19 @@ const Profile = () => {
     };
   }, []);
 
+  useEffect(()=>{
+    const getUserDetails= async(id)=>{
+      try {
+        const {data}= await axios.get(`http://localhost:5000/api/user/getDetails/${id}`)
+        setFriends(prev=> [...prev,data.username])
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    localInfo?.friends?.map(i=> getUserDetails(i))
+  },[localInfo])
+  
+
   if (!userInfo || !localInfo) return <div><h1>Loading...</h1></div>;
 
   return (
@@ -110,11 +124,25 @@ const Profile = () => {
         </div>
         <img src={localInfo.profileAvatar} alt="User Avatar" className='border-black bolder-solid border-2'/>
       </div>
+      <h2 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700 flex gap-2'>Friends List <Users/></h2>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
+        {
+          friends?.length===0 &&
+          <p className='col-span-1 md:col-span-2 lg:col-span-4'>NO FRIENDS</p>
+        }
+        {friends?.map((i,index)=>{
+          
+          return(
+          <a href={`/friend/${i}`} id={`${index}`}><p className='uppercase text-l p-2 px-4 hover:scale-110 bg-blue-600 text-white rounded-lg font-bold'>
+            {i}
+          </p></a>
+          )})}
+      </div>
       <h3 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700'>CODEFORCES Rating History</h3>
       <h2 className='uppercase text-l p-2 px-4 hover:scale-110 bg-blue-600 text-white rounded-lg font-bold'>Last 5 contests</h2>
       <div className='flex flex-col items-center overflow-x-hidden w-[90vw] bg-yellow-400 p-2 py-4 rounded-xl border-solid border-2 border-black'>
         {historyInfo.length===0 && <p>Loading...</p>}
-        {historyInfo.reverse().slice(0,5).map((history,index)=>{
+        {historyInfo.slice(-5).map((history,index)=>{
             return(
             <div key={index} className='flex flex-col md:flex-row gap-3'>
               <p className='font-semibold'>{index+1}.</p>

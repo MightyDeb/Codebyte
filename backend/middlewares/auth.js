@@ -5,7 +5,7 @@ import User from "../models/User.js"
 export const isAuthenticated=(req,res,next)=>{
   try {
     const token= req.cookies.token 
-    console.log(token)
+    // console.log(token)
     if(!token){
       return next(new ErrorHandler('Please login to access the route', 401))
     }
@@ -23,7 +23,7 @@ export const socketAuthenticator= async (err,socket,next) =>{
       return next(err)
     }
     const authToken= socket.request.cookies.token
-    console.log(authToken)
+    // console.log(authToken)
     if(!authToken){
       return next(new ErrorHandler("Please login to access this route.", 401))
     }

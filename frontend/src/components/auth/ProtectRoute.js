@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 
 const ProtectRoute = ({ element, user, redirect = '/login' }) => {
-  console.log(user, element);
+  // console.log(user, element);
   if (!user) {
     return <Navigate to={redirect} />;
   }
