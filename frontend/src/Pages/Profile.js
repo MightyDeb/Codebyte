@@ -140,7 +140,7 @@ const Profile = () => {
       </div>
       <h3 className='mt-2 text-xl md:text-4xl font-bold text-blue-700 border-b-4 border-blue-700'>CODEFORCES Rating History</h3>
       <h2 className='uppercase text-l p-2 px-4 hover:scale-110 bg-blue-600 text-white rounded-lg font-bold'>Last 5 contests</h2>
-      <div className='flex flex-col items-center overflow-x-hidden w-[90vw] bg-yellow-400 p-2 py-4 rounded-xl border-solid border-2 border-black'>
+      <div className='flex flex-col  overflow-x-hidden w-[90vw] bg-yellow-400 p-2 py-4 rounded-xl border-solid border-2 border-black'>
         {historyInfo.length===0 && <p>Loading...</p>}
         {historyInfo.slice(-5).map((history,index)=>{
             return(
