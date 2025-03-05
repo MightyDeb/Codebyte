@@ -54,7 +54,7 @@ const Home = () => {
     async function fetchData() {
       try {
         const userInfoResponse = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
-        const contestResponse= await axios.get('http://localhost:5000/api/contest/unattemptedContests')
+        const contestResponse= await axios.get('process.env.BACKEND_URI/api/contest/unattemptedContests')
         console.log(contestResponse)
         if (isMounted) {
           setUserInfo(userInfoResponse.data.result[0]);         

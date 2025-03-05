@@ -22,7 +22,7 @@ const ContestLive = () => {
     let isMounted= true
     async function fetchData(){
       try {
-        const response= await axios.get(`http://localhost:5000/api/contest/details/${id}`, { withCredentials: true });
+        const response= await axios.get(`process.env.BACKEND_URI/api/contest/details/${id}`, { withCredentials: true });
         console.log(response.data)
         if(isMounted){
           setContestData(response.data.contest)
@@ -42,8 +42,8 @@ const ContestLive = () => {
     async function fetchData(){
       try {
         if(contestData){
-          const responseCreator= await axios.get(`http://localhost:5000/api/user/getDetails/${contestData.creator}`, { withCredentials: true });
-          const responseParticipant= await axios.get(`http://localhost:5000/api/contest/sortedParticipants/${id}`)
+          const responseCreator= await axios.get(`process.env.BACKEND_URI/api/user/getDetails/${contestData.creator}`, { withCredentials: true });
+          const responseParticipant= await axios.get(`process.env.BACKEND_URI/api/contest/sortedParticipants/${id}`)
           
           if(isMounted){
             setCreatorData({
@@ -79,7 +79,7 @@ const ContestLive = () => {
   
   useEffect(()=>{
     if(f){
-      axios.get(`http://localhost:5000/api/contest/details/${id}`, { withCredentials: true })
+      axios.get(`process.env.BACKEND_URI/api/contest/details/${id}`, { withCredentials: true })
       .then(res=> setTime(res.data.contest.duration*60))
       .catch(err=> console.log(err))
       setF(0)
@@ -116,7 +116,7 @@ const ContestLive = () => {
     let pen=0;
     let solved= []
     try {
-      const res= await axios.get(`http://localhost:5000/api/contest/details/${id}`, { withCredentials: true })
+      const res= await axios.get(`process.env.BACKEND_URI/api/contest/details/${id}`, { withCredentials: true })
       const problemList= res.data.contest.problems.map((i)=>{
         return{
           contestId: i.contestId,
@@ -177,7 +177,7 @@ const ContestLive = () => {
           }
         }) : []
       }
-      await axios.put(`http://localhost:5000/api/contest/attempt/${id}`, 
+      await axios.put(`process.env.BACKEND_URI/api/contest/attempt/${id}`, 
         formData, { withCredentials: true }
       ).catch(err=> console.log(err))
     } catch (error) {

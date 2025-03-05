@@ -12,7 +12,7 @@ const Login = () => {
     setIsLoading(true)
     e.preventDefault();
     try {
-      const {data} = await axios.post('http://localhost:5000/api/user/login', formData, {
+      const {data} = await axios.post('process.env.BACKEND_URI/api/user/login', formData, {
         withCredentials: true,
       });
       console.log(data)

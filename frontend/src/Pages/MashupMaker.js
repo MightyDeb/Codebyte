@@ -30,7 +30,7 @@ const MashupMaker = ({socket}) => {
     async function fetchData(){
       try {
         const problemsList= await axios.get(`https://codeforces.com/api/problemset.problems`)
-        const contestsList= await axios.get('http://localhost:5000/api/contest/pastContests',{
+        const contestsList= await axios.get('process.env.BACKEND_URI/api/contest/pastContests',{
           withCredentials: true,
         })
         if(isMounted){
@@ -138,7 +138,7 @@ const MashupMaker = ({socket}) => {
       duration
     }
     try {
-      const {data} = await axios.post('http://localhost:5000/api/contest/createContest', formData, {
+      const {data} = await axios.post('process.env.BACKEND_URI/api/contest/createContest', formData, {
         withCredentials: true,
       });
       toast.success(data.message)
