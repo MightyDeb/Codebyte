@@ -1,9 +1,9 @@
 # Codebyte
-Codebyte is a competitive programming arena where users can engage and participate in custom contests, track performance and engage in problem solving with Codeforces integration.
+Codebyte is a competitive programming arena where users can engage and participate in custom contests, track performance and engage in problem solving with Codeforces integration. It is a cutting-edge competitive programming platform designed to challenge, engage, and elevate coders of all skill levels. It is built on seamless UI/UX and responsive design for smooth user experience. Whether you're a beginner looking to learn or an expert aiming to climb the leaderboard, Codebyte is your go-to platform for coding excellence.
 
 ## Features Implemented
-- **User Authentication and Login** : Secure login, user profiles displaying contest history, rankings and performance analytics.
-- **Contest Creation and Management : Users can create private contests, set durations, and select problems which are redirected to Codeforces for submission and evaluation.
+- **User Authentication and Login** : Secure login using cookies and web tokens, user profiles displaying contest history, rankings and performance analytics and displaying the rating curve along with comparison bar among friends.
+- **Contest Creation and Management** : Users can create private contests, set durations, and select problems which are redirected to Codeforces for submission and evaluation and then display the result and leaderboard of the contest. 
 - **Automated Scoring and Leaderboard**: Real-time leaderboard with an ICPC style penalty system based on Codeforces verdicts.
 - **Problem Discovery and Customization**: Browse problems by difficulty, tags, and personal performance history.
 - **Notifications and reminders**: Alerts for upcoming contests, invitations and leaderboard updates.
