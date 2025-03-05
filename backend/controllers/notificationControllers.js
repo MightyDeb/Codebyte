@@ -5,12 +5,10 @@ export const getNotification= async (req, res,next)=>{
     const {userId}= req
     const notifications= await Notification.find
     ({receivers: {$in: userId}}).sort({createdAt: -1})
-    if(!notifications){
-      return next(new ErrorHandler('No notifications found',404))
-    }
+    
     res.status(200).json({
       success: true,
-      notificationMessage: notifications.map(notification => notification.message)
+      notificationMessage: notifications? notifications.map(notification => notification.message) : []
     })
   } catch (error) {
     next  (error)
