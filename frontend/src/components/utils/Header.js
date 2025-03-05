@@ -15,9 +15,10 @@ const Header = ({socket}) => {
 
   useEffect(()=>{   
       let isMounted= true;
+      console.log(process.env.BACKEND_URI)
       async function fetchData(){
         try {
-      const notifications= await axios.get('process.env.BACKEND_URI/api/notifications/notification',{
+      const notifications= await axios.get(`https://codebyte-if2s.onrender.com/api/notifications/notification`,{
         withCredentials: true,
       })
       if(isMounted){

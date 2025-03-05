@@ -18,6 +18,7 @@
     "autoprefixer": "^10.4.20",
     "axios": "^1.8.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "easytimer.js": "^4.6.0",
     "framer-motion": "^12.4.7",
     "lodash": "^4.17.21",
