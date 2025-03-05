@@ -23,7 +23,7 @@ function App() {
   const user= localStorage.getItem("user");
   const [socket, setSocket]= useState(null)
   useEffect(()=>{
-    setSocket(io('process.env.BACKEND_URI'))
+    setSocket(io(process.env.BACKEND_URI))
     socket?.on("contestCreated", (data) => {
       console.log(data)
     })

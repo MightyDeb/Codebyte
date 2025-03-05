@@ -108,10 +108,10 @@ const Header = ({socket}) => {
       <div className='icons'>
         <div className='icon' >
          <button onClick={()=>setOpen(!open)}><Bell /></button>
-         <div className='counter'>{notifications.length+realTimeNotifications.length>0 && notifications.length+realTimeNotifications.length}</div>
+         <div className='counter'>{(notifications?notifications.length:0)+(realTimeNotifications?realTimeNotifications.length:0)>0 && notifications.length+realTimeNotifications.length}</div>
         </div>
       </div>
-      {open && notifications.length+realTimeNotifications.length>0 && <div className='notifications max-h-[80vh] overflow-scroll z-100'>
+      {open && (notifications?notifications.length:0)+(realTimeNotifications?realTimeNotifications.length:0)>0 && <div className='notifications max-h-[80vh] overflow-scroll z-100'>
         {notifications.map((notification,index)=>(
           <div key={index} className='notification'>
             <span className='font-semibold'>{notification}</span>
