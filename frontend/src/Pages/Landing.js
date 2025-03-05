@@ -6,7 +6,7 @@ function Landing() {
   return (
     <div className='min-h-[70vh] flex flex-col items-center justify-center gap-7 p-4 mt-24 '>
       
-      <section className="flex flex-col md:flex-row items-center justify-stretch py-20 md:px-12 rounded-lg gap-15 border-solid ">
+      <section className="flex flex-col lg:flex-row items-center justify-stretch py-20 md:px-12 rounded-lg gap-15 border-solid ">
         <div className="text-center md:text-left max-w-2xl">
           <h1 className="text-6xl md:text-8xl font-bold text-blue-900 hover:animate-bounce line transition ease-in-out delay-150">CODEBYTE.</h1>
           <p className="mt-4 text-xl text-gray-600">Your journey starts here.</p>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import Header from '../components/utils/Header';
+
 import pagination from '../components/utils/pagination';
 import { Button } from '@mui/material';
 import { EggFried, FilePen, Flag, Search } from 'lucide-react';

@@ -203,5 +203,3 @@ const Profile = () => {
 export default Profile;
 
 
-//ulta contest
-//user comparison (friends)

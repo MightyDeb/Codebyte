@@ -156,7 +156,3 @@ P.S.: Our project aimed to make competitive coding more accessible, engaging, an
 
 export default Home
 
-
-
-//unauthorized access give contests
-//can convert to grid
