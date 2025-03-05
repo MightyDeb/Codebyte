@@ -11,9 +11,7 @@ import cookieParser from "cookie-parser"
 import {Server} from "socket.io"
 import Notification from './models/Notification.js';
 import User from './models/User.js';
-import { ErrorHandler } from './utils/utility.js';
-
-
+import http from 'http'
 
 dotenv.config({
   path: './.env'
@@ -21,8 +19,8 @@ dotenv.config({
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
-const io = new Server({
+const server = http.createServer(app);
+const io = new Server(server,{
   cors:{
     origin: "*",
   }
@@ -31,17 +29,7 @@ app.set("io", io)
 
 
 const onlineUsers = new Map();
-// const addNewUser = (username,socketId) => {
-//   !onlineUsers.some(user => user.username === username) && onlineUsers.push({username,socketId})
-// }
-// const deleteUser = (socketId) => {
-//   onlineUsers = onlineUsers.filter(user => user.socketId !== socketId)
-// }
 
-// const getUser = (username) => {
-//   console.log(onlineUsers)
-//   return onlineUsers.find(user => user.username === username) 
-// }
 
 io.on("connection", (socket) => {
   //console.log("New Connection")
@@ -133,7 +121,7 @@ app.get("/api/leaderboard", async (req, res) => {
 
 app.use(errorMiddleware)
 
-io.listen(8000)
+// io.listen(8000)
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
