@@ -53,7 +53,7 @@ const Header = ({socket}) => {
       setNotifications([])
       setRealTimeNotifications([])
       setOpen(false)
-      await axios.put('process.env.BACKEND_URI/api/notifications/updateNotification',{
+      await axios.put('https://codebyte-if2s.onrender.com/api/notifications/updateNotification',{
         withCredentials: true,
       })
     } catch (error) {
@@ -63,7 +63,7 @@ const Header = ({socket}) => {
 
   const addFriendHandler = async() => {
     try {
-      await axios.put('process.env.BACKEND_URI/api/friends/addFriend',{friendUsername: user},{
+      await axios.put('https://codebyte-if2s.onrender.com/api/friends/addFriend',{friendUsername: user},{
         withCredentials: true,
       })
     } catch (error) {
@@ -74,7 +74,7 @@ const Header = ({socket}) => {
   const handleLogout = async() => {
     localStorage.removeItem("user")
     try {
-      await axios.get('process.env.BACKEND_URI/api/user/logout').then(()=>{
+      await axios.get('https://codebyte-if2s.onrender.com/api/user/logout').then(()=>{
       redirect('/login'); 
     })
     } catch (error) {

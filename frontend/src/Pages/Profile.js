@@ -65,7 +65,7 @@ const Profile = () => {
       try {
         const userInfoResponse = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
         const historyInfoResponse = await axios.get(`https://codeforces.com/api/user.rating?handle=${username}`);
-        const localInfoResponse = await axios.get('process.env.BACKEND_URI/api/user/me', { withCredentials: true });
+        const localInfoResponse = await axios.get('https://codebyte-if2s.onrender.com/api/user/me', { withCredentials: true });
         if (isMounted) {
           setUserInfo(userInfoResponse.data.result[0]);
           setHistoryInfo(historyInfoResponse.data.result);
@@ -84,7 +84,7 @@ const Profile = () => {
   useEffect(()=>{
     const getUserDetails= async(id)=>{
       try {
-        const {data}= await axios.get(`process.env.BACKEND_URI/api/user/getDetails/${id}`)
+        const {data}= await axios.get(`https://codebyte-if2s.onrender.com/api/user/getDetails/${id}`)
         setFriends(prev=> [...prev,data.username])
       } catch (error) {
         console.log(error)

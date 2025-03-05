@@ -13,10 +13,10 @@ const Comparison = () => {
     const fetchDetails= async()=>{
       try {
         if(isMounted){
-          const myResponse= await axios.get(`process.env.BACKEND_URI/api/user/get/${username}`,{
+          const myResponse= await axios.get(`'https://codebyte-if2s.onrender.com/api/user/get/${username}`,{
             withCredentials: true
           })
-          const friendResponse= await axios.get(`process.env.BACKEND_URI/api/user/get/${friendId}`,{
+          const friendResponse= await axios.get(`'https://codebyte-if2s.onrender.com/api/user/get/${friendId}`,{
             withCredentials: true
           })
           setMyDetails(myResponse.data.details)

@@ -49,7 +49,7 @@ function App({socket}) {
     setError("");
   
     try {
-      const response = await axios.get("process.env.BACKEND_URI/api/leaderboard")
+      const response = await axios.get("https://codebyte-if2s.onrender.com/api/leaderboard")
       .catch(e=> setError(e))
       const sortedUsers = response.data.result.sort((a, b) => b.rating - a.rating).slice(0,1000);
       setLeaderboard(sortedUsers);

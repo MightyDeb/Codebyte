@@ -12,7 +12,7 @@ const Register = () => {
     setIsLoading(true)
     e.preventDefault();
     try {
-      const {data} = await axios.post('process.env.BACKEND_URI/api/user/register', formData, {
+      const {data} = await axios.post('https://codebyte-if2s.onrender.com/api/user/register', formData, {
         withCredentials: true,
       });
       localStorage.setItem('user', data.user.username);

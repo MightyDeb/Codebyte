@@ -7,7 +7,7 @@ const GetSocket= ()=> useContext(SocketContent)
 
 const SocketProvider= ({children})=>{
   const socket=  useMemo(()=> 
-    io('process.env.BACKEND_URI', {withCredentials: true}) 
+    io('https://codebyte-if2s.onrender.com', {withCredentials: true}) 
   ,[])
   return(
     <SocketContent.Provider value={socket}>
