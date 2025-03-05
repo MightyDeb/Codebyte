@@ -12,8 +12,9 @@ Codebyte is a competitive programming arena where users can engage and participa
 - **Smart problem recommendations**: Suggestions based on weak topics.
 
 ## Hosted Links:
-[Frontend](https://codebyte-seven.vercel.app/)
-[Backend](https://codebyte-if2s.onrender.com)
+[Frontend](https://codebyte-seven.vercel.app/) (hosted on Vercel)
+
+[Backend](https://codebyte-if2s.onrender.com) (hosted on Render)
 
 ## Screenshots:
 
