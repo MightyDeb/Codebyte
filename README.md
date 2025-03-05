@@ -17,6 +17,7 @@ Codebyte is a competitive programming arena where users can engage and participa
 [Backend](https://codebyte-if2s.onrender.com) (hosted on Render)
 
 ## Screenshots:
+Click [here](assets)
 
 ## Technologies Used:
 ### Front-end:
